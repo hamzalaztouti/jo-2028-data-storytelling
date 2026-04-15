@@ -114,7 +114,7 @@ hr {
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("athlete_events.csv")
+    df = pd.read_csv("data/athlete_events.csv")
     return df
 
 df = load_data()
