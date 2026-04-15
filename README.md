@@ -112,6 +112,7 @@ Une application interactive a été développée avec Streamlit pour présenter 
 
 ## Structure du projet
 
+```text
 jo-2028-data-storytelling/
 │
 ├── data/
