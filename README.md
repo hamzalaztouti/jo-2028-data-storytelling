@@ -112,14 +112,16 @@ Une application interactive a été développée avec Streamlit pour présenter 
 
 ## Structure du projet
 
-```text
 jo-2028-data-storytelling/
+│
+├── data/
+│   └── athlete_events.csv
+│
 ├── app.py
 ├── projet_jo_2028.ipynb
-├── athlete_events.csv
 ├── README.md
 ├── requirements.txt
-└── .gitignore
+├── .gitignore
 
 
 ## Auteurs
