@@ -183,9 +183,17 @@ hr {
 
 
 # CHARGEMENT DES DONNÉES
+import os
+
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/athlete_events.csv")
+    file_path = "data/athlete_events.csv"
+    
+    if not os.path.exists(file_path):
+        st.error("Dataset not found. Please download it and place it in the data/ folder.")
+        st.stop()
+    
+    df = pd.read_csv(file_path)
     return df
 
 
@@ -320,9 +328,12 @@ tab1, tab2, tab3 = st.tabs(["Analyse", "Carte", "Prédiction"])
 with tab1:
     left, right = st.columns((1.2, 1))
 
+    
+    # TOP PAYS
     with left:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
         st.subheader("Top 10 pays")
+
         top_countries = (
             df_filtered["NOC"]
             .value_counts()
@@ -341,18 +352,24 @@ with tab1:
             color_continuous_scale="Turbo",
             title="Pays les plus représentés"
         )
+
         fig_top.update_traces(textposition="outside")
         fig_top = apply_plot_style(fig_top, height=470)
+
         fig_top.update_layout(
             xaxis_title="Nombre d'athlètes",
             yaxis_title="Pays"
         )
+
         st.plotly_chart(fig_top, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
+    
+    # PIE SEXE
     with right:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
         st.subheader("Répartition par sexe")
+
         sex_count = (
             df_filtered["Sex"]
             .value_counts()
@@ -369,43 +386,72 @@ with tab1:
                 title="Hommes / Femmes",
                 color_discrete_sequence=["#38bdf8", "#10b981", "#f59e0b"]
             )
+
             fig_sex = apply_plot_style(fig_sex, height=470)
             st.plotly_chart(fig_sex, use_container_width=True)
         else:
             st.info("Aucune donnée disponible pour ce filtre.")
+
         st.markdown("</div>", unsafe_allow_html=True)
 
+    
+    # EVOLUTION 
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Évolution des médailles par année")
-    medals_year = (
-        df.groupby("Year")["Has_Medal"]
-        .sum()
-        .reset_index()
-        .sort_values("Year")
-    )
 
-    fig_line = px.line(
-        medals_year,
-        x="Year",
-        y="Has_Medal",
-        markers=True,
-        title="Nombre total de médailles observées"
-    )
-    fig_line.update_traces(line=dict(width=4), marker=dict(size=8))
-    fig_line = apply_plot_style(fig_line, height=430)
-    fig_line.update_layout(
-        xaxis_title="Année",
-        yaxis_title="Nombre de médailles"
-    )
-    st.plotly_chart(fig_line, use_container_width=True)
+    df_trend = df.copy()
+
+    if selected_sport != "Tous":
+        df_trend = df_trend[df_trend["Sport"] == selected_sport]
+
+    if selected_sex != "Tous":
+        df_trend = df_trend[df_trend["Sex"] == selected_sex]
+
+    if selected_season != "Toutes":
+        df_trend = df_trend[df_trend["Season"] == selected_season]
+
+    if selected_country != "Tous":
+        df_trend = df_trend[df_trend["NOC"] == selected_country]
+
+    if df_trend.empty:
+        st.warning("Aucune donnée disponible pour afficher l’évolution.")
+    else:
+        medals_year = (
+            df_trend.groupby("Year")["Has_Medal"]
+            .sum()
+            .reset_index()
+            .sort_values("Year")
+        )
+
+        fig_line = px.line(
+            medals_year,
+            x="Year",
+            y="Has_Medal",
+            markers=True,
+            title="Nombre total de médailles observées"
+        )
+
+        fig_line.update_traces(line=dict(width=4), marker=dict(size=8))
+        fig_line = apply_plot_style(fig_line, height=430)
+
+        fig_line.update_layout(
+            xaxis_title="Année",
+            yaxis_title="Nombre de médailles"
+        )
+
+        st.plotly_chart(fig_line, use_container_width=True)
+
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # CORRELATION
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Corrélations des variables physiques")
+
     corr_df = df_filtered[["Age", "Height", "Weight"]].dropna()
 
     if not corr_df.empty and len(corr_df) > 1:
         corr = corr_df.corr(numeric_only=True)
+
         fig_corr = px.imshow(
             corr,
             text_auto=True,
@@ -413,22 +459,27 @@ with tab1:
             color_continuous_scale="RdBu_r",
             title="Heatmap des corrélations"
         )
+
         fig_corr = apply_plot_style(fig_corr, height=420)
         st.plotly_chart(fig_corr, use_container_width=True)
     else:
-        st.info("Pas assez de données pour calculer la heatmap avec ces filtres.")
+        st.info("Pas assez de données pour calculer la heatmap.")
+
     st.markdown("</div>", unsafe_allow_html=True)
 
+    
+    # LECTURE ANALYTIQUE
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Lecture analytique")
+
     st.write("""
     - Les filtres permettent d’isoler une année, un sport, un sexe, une saison ou un pays.
     - Les pays les plus représentés varient selon l’édition et la discipline.
     - L’évolution historique des médailles met en évidence des tendances fortes.
     - Les variables physiques apportent des signaux utiles mais ne suffisent pas seules à expliquer la performance.
     """)
-    st.markdown("</div>", unsafe_allow_html=True)
 
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ONGLET 2 : CARTE
