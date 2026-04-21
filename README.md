@@ -27,6 +27,20 @@ Contenu du dataset :
 - Participation aux Jeux Olympiques
 - Médailles obtenues (Or, Argent, Bronze)
 
+## Dataset (Important)
+
+Le dataset n’est pas inclus dans ce repository en raison de sa taille et des bonnes pratiques de gestion des données.
+
+### Pour exécuter le projet :
+
+1. Télécharger le dataset depuis :
+https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
+
+2. Placer le fichier dans le dossier :
+Sans ce fichier, l’application affichera un message d’erreur informatif.
+
+---
+
 ## Méthodologie
 
 ### 1. Data Audit
