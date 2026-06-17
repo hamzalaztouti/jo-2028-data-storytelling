@@ -1215,7 +1215,6 @@ if page == "Prédiction 2028":
 
 
 
-# ONGLET 6 — CLUSTERING K-MEANS
 
 
 # FOOTER
