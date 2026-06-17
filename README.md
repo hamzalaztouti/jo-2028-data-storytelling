@@ -1,130 +1,292 @@
-# JO 2028 - Analyse et Prédiction des Performances Olympiques
+# JO 2028 - Analyse, Segmentation et Prédiction des Performances Olympiques
 
 ## Contexte
 
-Ce projet a été réalisé dans le cadre du module Data & IA (Bachelor 3).
+Ce projet a été réalisé dans le cadre du Bachelor 3 Data & IA à Ynov Campus.
 
-L'objectif est de concevoir une application de data storytelling permettant d’analyser les performances historiques des Jeux Olympiques et de proposer une estimation des performances futures en vue des JO 2028.
+L'objectif est de développer une application complète de Data Storytelling permettant d'explorer l'historique des Jeux Olympiques, d'identifier les tendances majeures, de segmenter les profils d'athlètes grâce au Machine Learning et de proposer des projections pour les Jeux Olympiques de Los Angeles 2028.
 
-Le projet couvre l’ensemble des étapes d’un pipeline de data science : préparation des données, analyse exploratoire, modélisation et déploiement d’une application interactive.
+Le projet couvre l'ensemble du cycle de la Data Science :
 
-## Objectifs
-
-- Analyser les performances des Jeux Olympiques
-- Identifier les tendances par pays, sport et genre
-- Mettre en évidence les variables influençant la performance
-- Construire un modèle de machine learning
-- Développer une application interactive de visualisation et de prédiction
-
-## Données
-
-Dataset utilisé : `athlete_events.csv`
-
-Contenu du dataset :
-- Informations sur les athlètes : âge, taille, poids
-- Pays (NOC)
-- Sport et discipline
-- Participation aux Jeux Olympiques
-- Médailles obtenues (Or, Argent, Bronze)
-
-## Dataset (Important)
-
-Le dataset n’est pas inclus dans ce repository en raison de sa taille et des bonnes pratiques de gestion des données.
-
-### Pour exécuter le projet :
-
-1. Télécharger le dataset depuis :
-https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
-
-2. Placer le fichier dans le dossier :
-Sans ce fichier, l’application affichera un message d’erreur informatif.
+* Collecte et compréhension des données
+* Nettoyage et préparation
+* Analyse exploratoire
+* Visualisation interactive
+* Segmentation des athlètes (K-Means)
+* Modélisation prédictive
+* Déploiement avec Streamlit
 
 ---
 
-## Méthodologie
+# Objectifs
 
-### 1. Data Audit
-- Analyse des valeurs manquantes
-- Détection des doublons
-- Statistiques descriptives
-- Identification des valeurs aberrantes
+* Analyser l'évolution historique des Jeux Olympiques
+* Identifier les pays les plus performants
+* Étudier l'influence du sexe, de l'âge et des caractéristiques physiques
+* Explorer les performances des athlètes et disciplines
+* Segmenter les athlètes selon leurs profils sportifs
+* Prédire les performances futures en vue des JO 2028
+* Concevoir une application interactive et intuitive
 
-### 2. Nettoyage des données
-- Conversion des types de variables
-- Suppression ou gestion des valeurs manquantes
-- Préparation des données pour l’analyse
+---
 
-### 3. Feature Engineering
-- Création de la variable cible `Has_Medal`
-- Sélection des variables pertinentes pour la modélisation
+# Dataset
 
-### 4. Analyse exploratoire
-- Analyse des pays les plus représentés
-- Répartition des athlètes par sexe
-- Évolution des médailles dans le temps
-- Analyse des corrélations entre variables physiques
+Dataset utilisé :
 
-### 5. KPI
-- Nombre total d’athlètes
-- Nombre total de pays
-- Nombre total de sports
-- Nombre total de médailles
+athlete_events.csv
 
-## Modélisation
+Source :
 
-Deux modèles ont été étudiés :
-- Logistic Regression
-- Random Forest
+https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
 
-Le modèle Random Forest a été retenu pour la prédiction finale en raison de ses bonnes performances sur les données.
+Le dataset contient :
+
+* Nom de l'athlète
+* Sexe
+* Âge
+* Taille
+* Poids
+* Pays (NOC)
+* Sport
+* Épreuve
+* Saison (Summer / Winter)
+* Année
+* Médaille obtenue
+
+Le projet utilise les données historiques jusqu'aux Jeux Olympiques de Rio 2016.
+
+---
+
+# Préparation des données
+
+## Nettoyage
+
+* Suppression des doublons
+* Gestion des valeurs manquantes
+* Conversion des types de données
+* Vérification de la cohérence des variables
+
+## Feature Engineering
+
+Création des variables :
+
+* Has_Medal
+* Participation_Count
+* Total_Medals_Athlete
+* Country_Medals
+
+Ces variables sont utilisées pour les analyses et les modèles de Machine Learning.
+
+---
+
+# Analyse Exploratoire
+
+L'application permet :
+
+## KPI globaux
+
+* Nombre total d'athlètes
+* Nombre total de pays
+* Nombre total de sports
+* Nombre total de médailles
+
+## Analyses réalisées
+
+* Top pays médaillés
+* Répartition des médailles par sexe
+* Répartition été / hiver
+* Analyse des disciplines olympiques
+* Analyse des performances historiques
+* Corrélations entre variables physiques
+
+---
+
+# Carte Mondiale des Médailles
+
+Une carte interactive permet de visualiser :
+
+* Les pays médaillés
+* Les performances mondiales
+* Les médailles d'or, d'argent ou de bronze
+
+Filtres disponibles :
+
+* Saison
+* Année
+* Type de médaille
+
+Le filtre des années s'adapte automatiquement selon la saison sélectionnée :
+
+* Summer → années des JO d'été uniquement
+* Winter → années des JO d'hiver uniquement
+
+---
+
+# Performances et Athlètes
+
+Cette section présente :
+
+## Classement des athlètes
+
+* Athlètes les plus médaillés
+* Athlètes les plus performants
+
+## Nouvelles générations
+
+Identification des jeunes athlètes à fort potentiel.
+
+## Cotes par discipline
+
+Calcul d'un score pondéré prenant en compte :
+
+* Les médailles
+* La régularité
+* Les participations
+
+---
+
+# Timeline Historique
+
+Analyse temporelle des Jeux Olympiques :
+
+* Évolution du nombre de médailles
+* Évolution des disciplines
+* Comparaison JO d'été / JO d'hiver
+* Analyse des records historiques
+
+Les visualisations sont limitées aux données disponibles jusqu'en 2016.
+
+---
+
+# Clustering K-Means
+
+Une approche de Machine Learning non supervisé a été utilisée afin de segmenter les athlètes.
 
 Variables utilisées :
-- Age
-- Height
-- Weight
+
+* Age
+* Height
+* Weight
+* Participation_Count
+* Total_Medals_Athlete
+
+Méthodologie :
+
+* Standardisation des données
+* Méthode du coude
+* K optimal = 3
+
+Profils obtenus :
+
+### Débutants
+
+Athlètes ayant peu de participations et peu de médailles.
+
+### Intermédiaires
+
+Athlètes expérimentés avec performances régulières.
+
+### Performants
+
+Athlètes ayant obtenu le plus grand nombre de médailles et de participations.
+
+---
+
+# Modélisation Prédictive
+
+Deux modèles ont été évalués :
+
+## Logistic Regression
+
+Modèle linéaire servant de référence.
+
+## Random Forest
+
+Modèle retenu pour les prédictions finales.
+
+Variables utilisées :
+
+* Age
+* Height
+* Weight
+* Participation_Count
+* Total_Medals_Athlete
+* Country_Medals
 
 Variable cible :
-- Has_Medal
 
-## Évaluation
+* Has_Medal
 
-Les performances du modèle ont été évaluées avec plusieurs métriques :
-- Accuracy
-- Matrice de confusion
-- ROC Curve
-- AUC
+---
 
-Le modèle retenu présente de bonnes performances globales pour une première estimation.
+# Évaluation des Modèles
 
-## Application Streamlit
+Les modèles ont été évalués à l'aide de :
 
-Une application interactive a été développée avec Streamlit pour présenter les résultats du projet.
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+* ROC Curve
+* AUC
+* Matrice de confusion
 
-### Fonctionnalités principales
+Le modèle Random Forest a obtenu les meilleurs résultats et a été retenu pour l'application finale.
 
-#### Analyse
-- Affichage des KPI
-- Graphiques interactifs
-- Filtres dynamiques par année, sport, sexe, saison et pays
+---
 
-#### Carte
-- Visualisation mondiale des médailles par pays
+# Prédictions JO 2028
 
-#### Prédiction
-- Simulation d’un profil d’athlète
-- Estimation de la probabilité d’obtenir une médaille
-- Visualisation de l’importance des variables du modèle
+L'application propose :
 
-## Technologies utilisées
+## Simulation d'un athlète
 
-- Python
-- Pandas
-- Scikit-learn
-- Plotly
-- Streamlit
-- Jupyter Notebook
+Prédiction de la probabilité d'obtenir une médaille.
 
-## Structure du projet
+## Projection des pays favoris
+
+Analyse des tendances historiques afin d'estimer les performances potentielles des pays lors des Jeux Olympiques de Los Angeles 2028.
+
+Les projections utilisent les quatre dernières olympiades disponibles dans le dataset historique.
+
+---
+
+# Application Streamlit
+
+L'application est composée de six modules :
+
+1. Analyse
+2. Carte
+3. Athlètes
+4. Timeline
+5. K-Means
+6. Prédiction 2028
+
+Fonctionnalités :
+
+* Interface moderne
+* Filtres dynamiques
+* Graphiques interactifs Plotly
+* Cartes géographiques
+* Segmentation Machine Learning
+* Modèles prédictifs
+
+---
+
+# Technologies Utilisées
+
+* Python
+* Pandas
+* NumPy
+* Scikit-Learn
+* Plotly
+* Streamlit
+* Jupyter Notebook
+
+---
+
+# Structure du Projet
 
 ```text
 jo-2028-data-storytelling/
@@ -133,16 +295,21 @@ jo-2028-data-storytelling/
 │   └── athlete_events.csv
 │
 ├── app.py
-├── projet_jo_2028.ipynb
+├── JO_OLMP_2028.ipynb
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
+```
 
+---
 
-## Auteurs
+# Auteurs
 
-- **Hamza Laztouti**
-- **Rossaina Tahiri**
+Hamza Laztouti
+Rossaina Tahiri
 
-Bachelor 3 Data & IA  
+Bachelor 3 Data & IA
+
 Ynov Campus
+
+Projet Fil Rouge 2025-2026
